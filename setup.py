@@ -7,12 +7,15 @@ install_requires = [
     'zope.annotation',
     'zope.security',
     'zope.securitypolicy',
+    'grokcore.component',
     ]
 
 tests_require = [
     'zope.interface',
+    'zope.app.testing',
+    'zope.principalregistry',
+    'zope.testing',
     ]
-
 
 setup(name='dolmen.security.policies',
       version=version,
