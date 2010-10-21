@@ -18,6 +18,12 @@ class ExtraRoleMap(AnnotationSecurityMap):
         self.context = context
         self.extra = self._compute_extra_data()
 
+    def __nonzero__(self):
+        """This is a fix, because zope.securitypolicty tests 'if adapter'
+        and we have to be bool-ed to True.
+        """
+        return True
+
     def queryCell(self, rowentry, colentry, default=None):
         cell = self.extra.queryCell(rowentry, colentry, default=default)
         if cell is default:
@@ -27,7 +33,9 @@ class ExtraRoleMap(AnnotationSecurityMap):
 
     def getCol(self, colentry):
         col = self.extra._bycol.get(colentry)
-        col.extend(self._bycol.get(colentry))
+        former = self._bycol.get(colentry)
+        if former:
+            col.update(former)
         if col:
             return col.items()
         return []

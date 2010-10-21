@@ -106,7 +106,7 @@ Additive behavior
   ('zope.test homepage',
      {'principalPermissions': [], 'principalRoles': [], 'rolePermissions': []})
 
-  >>> class HomepageRoleManager(ExtraRoleMap, grok.Adapter):
+  >>> class HomepageRoleManager(ExtraRoleMap):
   ...    grok.context(MyHomefolder)
   ...
   ...    def _compute_extra_data(self):
@@ -114,8 +114,14 @@ Additive behavior
   ...        extra_map.addCell('test.role', self.context.userid, Allow)
   ...        return extra_map
 
-  >>> grok_component('prm', HomepageRoleManager)
-  True
+  >>> from zope.component import provideAdapter
+  >>> from zope.securitypolicy.interfaces import (
+  ...      IPrincipalRoleManager, IPrincipalRoleMap, IRolePermissionMap)
+
+  >>> provideAdapter(
+  ...     HomepageRoleManager, (MyHomefolder,), IPrincipalRoleManager)
+  >>> provideAdapter(
+  ...     HomepageRoleManager, (MyHomefolder,), IPrincipalRoleMap)
 
   >>> pprint(settingsForObject(home)[0])
   ('zope.test homepage',
@@ -124,3 +130,20 @@ Additive behavior
                         'role': 'test.role',
                         'setting': PermissionSetting: Allow}],
     'rolePermissions': []})
+
+
+Checking the permissions::
+
+  >>> from zope.security.testing import Principal, Participation
+  >>> from zope.security.management import newInteraction, endInteraction
+  >>> newInteraction(Participation(Principal('zope.test')))
+
+  >>> from zope.security import checkPermission
+  >>> checkPermission('zope.ManageContent', home)
+  True
+
+  >>> home.userid = "someone else"
+  >>> checkPermission('zope.ManageContent', home)
+  False
+
+  >>> endInteraction()
