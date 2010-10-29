@@ -4,6 +4,7 @@ import os
 version = '0.1'
 
 install_requires = [
+    'setuptools',
     'zope.annotation',
     'zope.security',
     'zope.securitypolicy',
