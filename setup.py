@@ -2,6 +2,9 @@ from setuptools import setup, find_packages
 import os
 
 version = '0.1'
+readme = open(os.path.join(
+    'src', 'dolmen', 'security', 'policies', 'README.txt')).read()
+history = open(os.path.join("docs", "HISTORY.txt")).read()
 
 install_requires = [
     'setuptools',
@@ -12,18 +15,16 @@ install_requires = [
     ]
 
 tests_require = [
+    'zope.component',
+    'zope.location',
     'zope.interface',
-    'zope.app.testing',
     'zope.principalregistry',
-    'zope.testing',
     ]
 
 setup(name='dolmen.security.policies',
       version=version,
       description="A collection of security maps baseclasses",
-      long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
-      # Get more strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      long_description=readme + "\n\n" + history,
       classifiers=[
         "Programming Language :: Python",
         ],

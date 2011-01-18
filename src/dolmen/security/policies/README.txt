@@ -1,6 +1,9 @@
-======================
-dolmen.security.policy
-======================
+========================
+dolmen.security.policies
+========================
+
+``dolmen.security.policies`` provides a pluggable way to handle
+object-level security.
 
   >>> from zope.location import Location
   >>> from zope.interface import implements
