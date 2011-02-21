@@ -149,4 +149,32 @@ Checking the permissions::
   >>> checkPermission('zope.ManageContent', home)
   False
 
+
+RolePermissions
+
+  >>> from dolmen.security.policies import ExtraRolePermissionMap
+  >>> from zope.securitypolicy.interfaces import IRolePermissionManager
+
+  >>> class HomepageRolePermissionManager(ExtraRolePermissionMap):
+  ...    grok.context(MyHomefolder)
+  ...
+  ...    def _compute_extra_data(self):
+  ...        extra_map = SecurityMap()
+  ...        extra_map.addCell('edit-homepage', 'test.role', Allow)
+  ...        return extra_map
+
+  >>> provideAdapter(
+  ...     HomepageRolePermissionManager, (MyHomefolder,), IRolePermissionManager)
+
+  >>> pprint(settingsForObject(home)[0])
+  ('zope.test homepage',
+   {'principalPermissions': [],
+    'principalRoles': [{'principal': 'someone else',
+                        'role': 'test.role',
+                        'setting': PermissionSetting: Allow}],
+    'rolePermissions': [{'permission': 'edit-homepage',
+                         'role': 'test.role',
+                         'setting': PermissionSetting: Allow}]})
+
+
   >>> endInteraction()
