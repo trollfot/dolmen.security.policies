@@ -93,7 +93,7 @@ Additive behavior
 
   >>> import grokcore.component as grok
   >>> from grokcore.component.testing import grok_component
-  >>> from zope.securitypolicy.interfaces import Allow
+  >>> from zope.securitypolicy.interfaces import Allow, Deny
   >>> from zope.securitypolicy.securitymap import SecurityMap
   >>> from dolmen.security.policies.principalrole import ExtraRoleMap
   >>> from zope.securitypolicy.interfaces import IPrincipalRoleManager
@@ -149,8 +149,15 @@ Checking the permissions::
   >>> checkPermission('zope.ManageContent', home)
   False
 
+  >>> home.userid = "zope.test"
+  >>> checkPermission('zope.ManageContent', home)
+  True
 
-RolePermissions
+
+Role Permissions
+----------------
+
+We can allow/deny permissions on roles too::
 
   >>> from dolmen.security.policies import ExtraRolePermissionMap
   >>> from zope.securitypolicy.interfaces import IRolePermissionManager
@@ -160,21 +167,24 @@ RolePermissions
   ...
   ...    def _compute_extra_data(self):
   ...        extra_map = SecurityMap()
-  ...        extra_map.addCell('edit-homepage', 'test.role', Allow)
+  ...        extra_map.addCell('zope.ManageContent', 'test.role', Deny)
   ...        return extra_map
 
   >>> provideAdapter(
-  ...     HomepageRolePermissionManager, (MyHomefolder,), IRolePermissionManager)
+  ...     HomepageRolePermissionManager, (MyHomefolder,),
+  ...     IRolePermissionManager)
 
   >>> pprint(settingsForObject(home)[0])
   ('zope.test homepage',
    {'principalPermissions': [],
-    'principalRoles': [{'principal': 'someone else',
+    'principalRoles': [{'principal': 'zope.test',
                         'role': 'test.role',
                         'setting': PermissionSetting: Allow}],
-    'rolePermissions': [{'permission': 'edit-homepage',
+    'rolePermissions': [{'permission': 'zope.ManageContent',
                          'role': 'test.role',
-                         'setting': PermissionSetting: Allow}]})
+                         'setting': PermissionSetting: Deny}]})
 
+  >>> checkPermission('zope.ManageContent', home)
+  False
 
   >>> endInteraction()
