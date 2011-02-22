@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.2'
+version = '0.3'
 readme = open(os.path.join(
     'src', 'dolmen', 'security', 'policies', 'README.txt')).read()
 history = open(os.path.join("docs", "HISTORY.txt")).read()
