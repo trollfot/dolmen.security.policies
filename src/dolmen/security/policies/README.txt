@@ -6,17 +6,17 @@ dolmen.security.policies
 object-level security.
 
   >>> from zope.location import Location
-  >>> from zope.interface import implements
+  >>> from zope.interface import implementer
   >>> from zope.annotation.interfaces import IAttributeAnnotatable
 
-  >>> class Content(Location):
-  ...     implements(IAttributeAnnotatable)
+  >>> @implementer(IAttributeAnnotatable)
+  ... class Content(Location):
   ...     def __init__(self, parent, name):
   ...         self.__parent__ = parent
   ...         self.__name__ = name
 
-  >>> class MyFolder(Location):
-  ...     implements(IAttributeAnnotatable)
+  >>> @implementer(IAttributeAnnotatable)
+  ... class MyFolder(Location):
   ...     def __init__(self):
   ...         self.contents = {}
 
@@ -62,7 +62,7 @@ Test the role application
 
   >>> from zope.securitypolicy.interfaces import IPrincipalRoleMap
   >>> folder_rpm = IPrincipalRoleMap(folder)
-  >>> print folder_rpm.getRolesForPrincipal('zope.test')
+  >>> print(folder_rpm.getRolesForPrincipal('zope.test'))
   [('test.role', PermissionSetting: Allow)]
 
   
@@ -98,8 +98,8 @@ Additive behavior
   >>> from dolmen.security.policies.principalrole import ExtraRoleMap
   >>> from zope.securitypolicy.interfaces import IPrincipalRoleManager
 
-  >>> class MyHomefolder(Location):
-  ...     implements(IAttributeAnnotatable)
+  >>> @implementer(IAttributeAnnotatable)
+  ... class MyHomefolder(Location):
   ...     def __init__(self, id):
   ...        self.__name__ = "%s homepage" % id
   ...        self.userid = id

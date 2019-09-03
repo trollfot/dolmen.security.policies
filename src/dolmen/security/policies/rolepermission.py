@@ -2,6 +2,7 @@
 
 import grokcore.component as grok
 
+from zope.interface import implementer
 from zope.securitypolicy.interfaces import Allow, Deny
 from zope.securitypolicy.interfaces import IRolePermissionManager
 from zope.securitypolicy.securitymap import AnnotationSecurityMap
@@ -9,9 +10,10 @@ from zope.securitypolicy.rolepermission import (
     RolePermissionManager, AnnotationRolePermissionManager)
 
 
+@implementer(IRolePermissionManager)
 class ExtraRolePermissionMap(AnnotationSecurityMap):
     grok.provides(IRolePermissionManager)
-    grok.implements(IRolePermissionManager)
+
     key = AnnotationRolePermissionManager.key
 
     def __init__(self, context):
