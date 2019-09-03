@@ -69,7 +69,7 @@ class ExtraRolePermissionMap(AnnotationSecurityMap):
     unsetPermissionFromRole = AnnotationSecurityMap.delCell
 
     def grantPermissionToRole(self, permission_id, role_id, check=True):
-        AnnotationSecurityMap.addCell(permission_id, role_id, Allow)
+        AnnotationSecurityMap.addCell(self, permission_id, role_id, Allow)
 
     def denyPermissionToRole(self, permission_id, role_id, check=True):
-        AnnotationSecurityMap.addCell(permission_id, role_id, Deny)
+        AnnotationSecurityMap.addCell(self, permission_id, role_id, Deny)
