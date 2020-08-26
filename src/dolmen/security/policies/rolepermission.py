@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
-
 import grokcore.component as grok
 
 from zope.interface import implementer
 from zope.securitypolicy.interfaces import Allow, Deny
 from zope.securitypolicy.interfaces import IRolePermissionManager
 from zope.securitypolicy.securitymap import AnnotationSecurityMap
-from zope.securitypolicy.rolepermission import (
-    RolePermissionManager, AnnotationRolePermissionManager)
+from zope.securitypolicy.rolepermission import AnnotationRolePermissionManager
 
 
 @implementer(IRolePermissionManager)
@@ -21,7 +18,7 @@ class ExtraRolePermissionMap(AnnotationSecurityMap):
         self.context = context
         self.extra = self._compute_extra_data()
 
-    def __nonzero__(self):
+    def __bool__(self):
         """This is a fix, because zope.securitypolicty tests 'if adapter'
         and we have to be bool-ed to True.
         """
@@ -30,7 +27,7 @@ class ExtraRolePermissionMap(AnnotationSecurityMap):
     def queryCell(self, rowentry, colentry, default=None):
         cell = self.extra.queryCell(rowentry, colentry, default=default)
         if cell is default:
-            return AnnotationPrincipalRoleManager.queryCell(
+            return AnnotationRolePermissionManager.queryCell(
                 self, rowentry, colentry, default=default)
         return cell
 

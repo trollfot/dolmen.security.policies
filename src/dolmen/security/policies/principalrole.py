@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import grokcore.component as grok
 from zope.interface import implementer
 from zope.securitypolicy.interfaces import Allow, Deny
@@ -14,13 +12,13 @@ class ExtraRoleMap(AnnotationSecurityMap):
     grok.provides(IPrincipalRoleManager)
 
     key = AnnotationPrincipalRoleManager.key
-    
+
     def __init__(self, context):
         super(ExtraRoleMap, self).__init__(context)
         self.context = context
         self.extra = self._compute_extra_data()
 
-    def __nonzero__(self):
+    def __bool__(self):
         """This is a fix, because zope.securitypolicty tests 'if adapter'
         and we have to be bool-ed to True.
         """
@@ -64,7 +62,7 @@ class ExtraRoleMap(AnnotationSecurityMap):
 
     # Add / Del operations
     unsetRoleForPrincipal = AnnotationSecurityMap.delCell
-    
+
     def assignRoleToPrincipal(self, role_id, principal_id):
         AnnotationSecurityMap.addCell(self, role_id, principal_id, Allow)
 

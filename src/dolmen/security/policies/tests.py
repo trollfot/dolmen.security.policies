@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
-
 import doctest
 import unittest
 import pprint
 import dolmen.security.policies
 from zope.component.testlayer import ZCMLFileLayer
+
 
 layer = ZCMLFileLayer(dolmen.security.policies)
 

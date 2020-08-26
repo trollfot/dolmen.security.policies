@@ -65,7 +65,7 @@ Test the role application
   >>> print(folder_rpm.getRolesForPrincipal('zope.test'))
   [('test.role', PermissionSetting: Allow)]
 
-  
+
 Role inheritence
 ~~~~~~~~~~~~~~~~
 
